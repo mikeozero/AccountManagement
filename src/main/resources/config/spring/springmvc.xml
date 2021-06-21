@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd ">
+	
+	<!-- 扫描包 -->
+	<context:component-scan base-package="controller;service.imp">
+		<!-- 在对controller的包进行扫描时,添加如下配置,就可以支持在Controller上面加事务 -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	<!-- 指定事务的管理器 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 非注解的处理器映射器1 -->
+	 <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/> 
+	 <!-- 非注解的处理器映射器2 -->
+	 <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	     <property name="mappings">
+	         <props>
+	         </props>
+	     </property>
+	 </bean>
+
+	<!-- 非注解的处理器适配器 -->
+	 <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/> 
+	 <bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"></bean>
+	 
+	
+	<!-- 注解驱动 ,包含注解的适配器和映射器，还有更多有关注解的配置,注解方式必须加这行标签-->
+	<mvc:annotation-driven conversion-service="conversionService" validator="validator"></mvc:annotation-driven>
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	    <property name="prefix" value="/"></property>
+	    <property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	
+	 <!-- 转换器 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	    <property name="converters">
+	        <list>
+	            <bean class="filter.CustomDateConverter"></bean>
+	        </list>
+	    </property>
+	</bean>
+	
+	<!-- 校验器 -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<!-- hibernate校验器-->
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		<!-- 指定校验使用的资源文件，在文件中配置校验错误信息，如果不指定则默认使用classpath下的ValidationMessages.properties -->
+		 <property name="validationMessageSource" ref="messageSource" /> 
+	</bean>	
+	
+	<!-- 校验错误信息配置文件 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<!-- 资源文件名-->
+		<property name="basenames">   
+       	 <list>    
+            <value>classpath:config/CustomValidationMessages</value> 
+       	 </list>   
+    	</property>
+		<!-- 资源文件编码格式 -->
+		<property name="fileEncodings" value="utf-8" />
+		<!-- 对资源文件内容缓存时间，单位秒 -->
+		<property name="cacheSeconds" value="180" />
+		<property name="defaultEncoding" value="utf-8"></property>
+	</bean>
+
+	</beans>

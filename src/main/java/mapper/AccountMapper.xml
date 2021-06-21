@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.AccountMapper">
+    <select id="selectAllTransactions" resultType="transactionTable">
+        select t.id,t.agent_code,t.enter_date,t.customerid,concat(cu.first_name," ",cu.last_name,if(cu.english_name is null or cu.english_name='',"",concat(" (",cu.english_name,")"))) customerName,t.co_applicantid,concat(co.first_name," ",co.last_name,case when isnull(co.english_name)=1 or co.english_name='' then "" else concat(" (",co.english_name,")") end) coApplicantName,t.referrerid,concat(t.referrer_firstname," ",t.referrer_lastname) referrerName,t.referral_time,t.comments
+        from Transactions t
+        left join Customer cu on t.customerid = cu.customerid
+        left join Customer co on t.co_applicantid = co.customerid
+        order by ID
+    </select>
+    <select id="selectAllCustomers" resultType="customerTable">
+        select IFNULL((select CustomerID from Transactions where CustomerID = a.CustomerID),concat(CustomerID,' *')) customerId,First_Name firstName,Last_Name lastName,English_Name englishName,Gender gender,concat(birth_year,'-',case when birth_month&lt;10 then concat('0',birth_month) else birth_month end, '-', case when Birth_Day&lt;10 then concat('0',Birth_Day) else Birth_Day end) dob,Email email,Cell_Phone cellPhone,Home_Phone homePhone,Work_Phone workPhone,Comments comments from Customer as a order by CustomerID
+    </select>
+    <select id="selectAllNewOwnFunds" resultType="newOwnFundsTable">
+    	select id,customerId,completed,concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end) applyDate,apply_amount applyAmount,account_type accountType,investment_to investTo,name_of_account_owner nameOfOwner,sales_charge salesCharge,concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end) settleDate,contract_no contractNo,settle_amount settleAmount,result result,referral_fee referralFee,comments from New_Own_Funds order by ID
+    </select>
+    <select id="selectAllBankLoans" resultType="bankLoansTable">
+    	select id,customerId,completed,account_type accountType,concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end) applyDate,apply_amount applyAmount,investment_to investTo,loan_type loanType,sales_charge salesCharge,concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end) settleDate,contract_no contractNo,settle_amount settleAmount,result result,referral_fee referralFee,comments from Bank_Loans order by ID
+    </select>
+    <select id="selectAllInvTrans" resultType="invTransTable">
+    	select id,customerId,completed,transfer_type transferType,account_type accountType,concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end) applyDate,transfer_amount transferAmount,investment_to investTo,sales_charge salesCharge,concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end) settleDate,contract_no contractNo,settle_amount settleAmount,result result,referral_fee referralFee,comments from Investment_Transfers order by ID
+    </select>
+    <insert id="addCustomer" parameterType="customer">
+        	insert into Customer values(#{customerId},#{firstName},#{lastName},#{englishName},#{gender},#{birthYear},#{birthMonth},#{birthDay},#{sin},#{livingStatus},#{maritalStatus},#{citizenship},#{taxStatus},#{birthPlace},#{liveInCanadaSince},#{email},#{cellPhone},#{homePhone},#{workPhone},#{currentHouseNumber},#{currentStreetName},#{currentAptNumber},#{currentCity},#{currentProvince},#{currentPostalCode},#{currentSince},#{previousHouseNumber},#{previousStreetName},#{previousAptNumber},#{previousCity},#{previousProvince},#{previousPostalCode},#{previousSince},#{idType},#{idNumber},#{issueDate},#{expiryDate},#{provinceOfIssue},#{verificationDate},#{declaredBankruptcyEver},#{dateOfDischarge},#{spouseFirstName},#{spouseLastName},#{spouseDOB},#{child1},#{child1Age},#{child2},#{child2Age},#{child3},#{child3Age},#{child4},#{child4Age},#{comments})
+    </insert>
+    <insert id="addTransactions" parameterType="transactions">
+        insert into Transactions values(null,#{agentCode},#{enterDate},#{customer.customerId},#{hasCoApplicant},#{coApplicant.customerId},#{referrerId},#{referrerFirstName},#{referrerLastName},#{referralTime},#{comments})
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <insert id="addEmploymentInfos" parameterType="employmentInfos">
+    	insert into Employment_Info(CustomerID,Type,Employment_Status,Annual_Income,Employer_Name,Business_Address,Duration,Industry,Occupation) values
+        (#{customerId},#{type},#{employmentStatus},#{annualIncome},#{employerName},#{businessAddress},#{duration},#{industry},#{occupation})
+    </insert>
+    <insert id="addBeneficiariesTrustee" parameterType="beneficiariesTrustee">
+        insert into Beneficiaries_Trustee(CustomerID,Type,Last_Name,First_Name,Relationship,Gender,BenificiaryType,DOB,Share_Percent,SIN_for_RESP_Only) values
+        (#{customerId},#{type},#{lastName},#{firstName},#{relationship},#{gender},#{benificiaryType},#{dob},#{sharePercent},#{sinForRESPOnly})
+    </insert>
+    <insert id="addLiabilities" parameterType="liabilities">
+        insert into Liabilities(CustomerID,Type,Market_Value,Liability_Balance,Institution,Monthly_Liability,Monthly_Property_Tax,Monthly_Condo_Fee) values
+        (#{customerId},#{type},#{marketValue},#{liabilityBalance},#{institution},#{monthlyLiability},#{monthlyPropertyTax},#{monthlyCondoFee})
+    </insert>
+    <insert id="addAssets" parameterType="asset">
+        insert into Assets(CustomerID,Type,Applicant_Value,Institution) values(#{customerId},#{type},#{applicantValue},#{institution})
+    </insert>
+    <insert id="addIncomes" parameterType="incomes">
+      	insert into Incomes(CustomerID,Type,Annual,Monthly) values
+      	(#{customerId},#{type},#{annual},#{monthly})
+    </insert>
+    <insert id="addNewOwnFunds" parameterType="newOwnFunds">    	
+    	insert into New_Own_Funds(CustomerID,Completed,Apply_Year,Apply_Month,Apply_Day,Apply_Amount,Account_Type,Investment_to,Pay_Method,Inv_Instruction,One_time_PAD_Date,Account_Number,Transit_Number,Institution_Number,Institution_Name,Name_of_Account_Owner,Regular_PAD_1st_Date,Frequency,Day,Sales_Charge,Settle_Year,Settle_Month,Settle_Day,Settle_Week,Contract_No,Settle_Amount,Result,Referral_Fee,Comments,Fund1_Code,Fund1_Volumn,Fund2_Code,Fund2_Volumn,Fund3_Code,Fund3_Volumn,Fund4_Code,Fund4_Volumn,Fund5_Code,Fund5_Volumn,Fund6_Code,Fund6_Volumn,Fund7_Code,Fund7_Volumn,Fund8_Code,Fund8_Volumn) values
+    	(#{customerId},#{completed},#{applyYear},#{applyMonth},#{applyDay},#{applyAmount},#{accountType},#{investmentTo},#{payMethod},#{invInstruction},#{oneTimePADDate},#{accountNumber},#{transitNumber},#{institutionNumber},#{institutionName},#{nameOfAccountOwner},#{regularPAD1stDate},#{frequency},#{day},#{salesCharge},#{settleYear},#{settleMonth},#{settleDay},#{settleWeek},#{contractNo},#{settleAmount},#{result},#{referralFee},#{comments},#{fund1Code},#{fund1Volumn},#{fund2Code},#{fund2Volumn},#{fund3Code},#{fund3Volumn},#{fund4Code},#{fund4Volumn},#{fund5Code},#{fund5Volumn},#{fund6Code},#{fund6Volumn},#{fund7Code},#{fund7Volumn},#{fund8Code},#{fund8Volumn})
+    </insert>
+    <insert id="addBankLoans" parameterType="bankLoans">
+        insert into Bank_Loans(CustomerID,Completed,Account_Type,Apply_Year,Apply_Month,Apply_Day,Apply_Amount,Loan_From,Loan_No,Investment_to,Loan_Type,Sales_Charge,Settle_Year,Settle_Month,Settle_Day,Settle_Week,Contract_No,Settle_Amount,Result,Referral_Fee,Comments,Fund1_Code,Fund1_Volumn,Fund2_Code,Fund2_Volumn,Fund3_Code,Fund3_Volumn,Fund4_Code,Fund4_Volumn,Fund5_Code,Fund5_Volumn,Fund6_Code,Fund6_Volumn,Fund7_Code,Fund7_Volumn,Fund8_Code,Fund8_Volumn) values
+    	(#{customerId},#{completed},#{accountType},#{applyYear},#{applyMonth},#{applyDay},#{applyAmount},#{loanFrom},#{loanNo},#{investmentTo},#{loanType},#{salesCharge},#{settleYear},#{settleMonth},#{settleDay},#{settleWeek},#{contractNo},#{settleAmount},#{result},#{referralFee},#{comments},#{fund1Code},#{fund1Volumn},#{fund2Code},#{fund2Volumn},#{fund3Code},#{fund3Volumn},#{fund4Code},#{fund4Volumn},#{fund5Code},#{fund5Volumn},#{fund6Code},#{fund6Volumn},#{fund7Code},#{fund7Volumn},#{fund8Code},#{fund8Volumn})
+    </insert>
+    <insert id="addInvestmentTransfers" parameterType="investmentTransfers">
+        insert into Investment_Transfers(CustomerID,Completed,Transfer_Type,Apply_Year,Apply_Month,Apply_Day,Account_Type,Transfer_Method,Account_No,Transfer_Amount,Investment_to,Sales_Charge,Relinquishing_Institution_Name,Institution_Address,Settle_Year,Settle_Month,Settle_Day,Settle_Week,Contract_No,Settle_Amount,Result,Referral_Fee,Comments,Fund1_Code,Fund1_Volumn,Fund2_Code,Fund2_Volumn,Fund3_Code,Fund3_Volumn,Fund4_Code,Fund4_Volumn,Fund5_Code,Fund5_Volumn,Fund6_Code,Fund6_Volumn,Fund7_Code,Fund7_Volumn,Fund8_Code,Fund8_Volumn) values
+    	(#{customerId},#{completed},#{transferType},#{applyYear},#{applyMonth},#{applyDay},#{accountType},#{transferMethod},#{accountNo},#{transferAmount},#{investmentTo},#{salesCharge},#{relinquishingInstitutionName},#{institutionAddress},#{settleYear},#{settleMonth},#{settleDay},#{settleWeek},#{contractNo},#{settleAmount},#{result},#{referralFee},#{comments},#{fund1Code},#{fund1Volumn},#{fund2Code},#{fund2Volumn},#{fund3Code},#{fund3Volumn},#{fund4Code},#{fund4Volumn},#{fund5Code},#{fund5Volumn},#{fund6Code},#{fund6Volumn},#{fund7Code},#{fund7Volumn},#{fund8Code},#{fund8Volumn})
+    </insert>
+    <select id="checkCustomer" parameterType="String" resultType="Customer">
+        select customerId,first_name firstName,last_name lastName,english_name englishName,gender,birth_year birthYear,
+               birth_month birthMonth,birth_day birthDay,sin,living_status livingStatus,marital_status maritalStatus,
+               citizenship,tax_status taxStatus,birth_place birthPlace,live_in_canada_since liveInCanadaSince,email,
+               cell_phone cellPhone,home_phone homePhone,work_phone workPhone,current_house_number currentHouseNumber,
+               current_street_name currentStreetName,current_apt_number currentAptNumber,current_city currentCity,
+               current_province currentProvince,current_postal_code currentPostalCode,current_since currentSince,
+               previous_house_number previousHouseNumber,previous_street_name previousStreetName,previous_apt_number previousAptNumber,
+               previous_city previousCity,previous_province previousProvince,previous_postal_code previousPostalCode,
+               previous_since previousSince,id_type idType,id_number idNumber,issue_date issueDate,expiry_date expiryDate,
+               province_of_issue provinceOfIssue,verification_date verificationDate,declared_bankruptcy_ever declaredBankruptcyEver,
+               date_of_discharge dateOfDischarge,spouse_first_name spouseFirstName,spouse_last_name spouseLastName,
+               spouse_dob spouseDOB,child1,child1_age child1Age,child2,child2_age child2Age,child3,child3_age child3Age,
+               child4,child4_age child4Age,comments
+        from Customer where CustomerId = #{customerId}
+    </select>
+    <select id="checkEmploymentInfos" parameterType="employmentInfos" resultType="employmentInfos">
+    	select * from employment_info where customerId=#{customerId} and type=#{type}
+    </select>
+    <select id="checkAssets" parameterType="asset" resultType="asset">
+    	select * from Assets where customerId=#{customerId} and type=#{type}
+    </select>
+    
+    <select id="getEmploymentInfosList" parameterType="String" resultType="employmentInfos">
+    	select ID,CustomerID,Type,Employment_Status employmentStatus,Annual_Income annualIncome,Employer_Name employerName,Business_Address businessAddress,Duration,Industry,Occupation from Employment_Info where CustomerId = #{customerId}
+    </select>
+    <select id="getBeneficiariesList" parameterType="String" resultType="beneficiariesTrustee">
+    	select ID,CustomerID,Type,Last_Name lastName,First_Name firstName,Relationship,Gender,BenificiaryType,DOB,Share_Percent sharePercent,SIN_for_RESP_Only sinForRESPOnly from Beneficiaries_Trustee where CustomerId = #{customerId}
+    </select>
+    <select id="getLiabilitiesList" parameterType="String" resultType="liabilities">
+    	select id,customerId,type,Market_Value marketValue,liability_balance liabilityBalance,institution,monthly_liability monthlyLiability,monthly_property_tax monthlyPorpertyTax,monthly_condo_fee monthlyCondoFee from Liabilities where CustomerId = #{customerId}
+    </select>
+    <select id="getAssetsList" parameterType="String" resultType="assets">
+    	select IF(a.id is not null,IF(c.id is not null,concat('x',a.id,'y',c.id),concat('x',a.id)),IF(c.id is not null,concat('y',c.id),null)) id,#{customerId} customerId,ifnull(a.Type,c.Type) type,
+               a.Applicant_Value applicantValue,a.Institution institution,c.Applicant_Value coApplicantValue,
+               c.Institution coInstitution 
+        from (select * from Assets where CustomerID = #{customerId})a
+        LEFT JOIN (select * from Assets where CustomerID = (select Co_ApplicantID from Transactions where CustomerID = #{customerId}))c on a.type = c.type
+        union
+        select IF(a.id is not null,IF(c.id is not null,concat('x',a.id,'y',c.id),concat('x',a.id)),IF(c.id is not null,concat('y',c.id),null)) id,#{customerId} customerId,ifnull(a.Type,c.Type) type,
+               a.Applicant_Value applicantValue,a.Institution institution,c.Applicant_Value coApplicantValue,
+               c.Institution coInstitution 
+        from (select * from Assets where CustomerID = #{customerId})a
+        RIGHT JOIN (select * from Assets where CustomerID = (select Co_ApplicantID from Transactions where CustomerID = #{customerId}))c on a.type = c.type
+    </select>
+    <select id="getIncomesList" parameterType="String" resultType="incomes">
+    	select * from Incomes where CustomerId = #{customerId}
+    </select>
+    <select id="getBankLoansList" parameterType="String" resultType="bankLoans">
+    	select id,customerId,completed,account_type accountType,apply_year applyYear,apply_month applyMonth,
+    	       apply_day applyDay,apply_amount applyAmount,loan_from loanFrom,loan_no loanNo,investment_to investmentTo,
+    	       loan_type loanType,sales_charge salesCharge,settle_year settleYear,settle_month settleMonth,settle_day settleDay,
+    	       settle_week settleWeek,contract_no contractNo,settle_amount settleAmount,result,referral_fee referralFee,
+    	       comments,fund1_code fund1Code,fund1_volumn fund1Volumn,fund2_code fund2Code,fund2_volumn fund2Volumn,fund3_code fund3Code,fund3_volumn fund3Volumn,
+    	       fund4_code fund4Code,fund4_volumn fund4Volumn,fund5_code fund5Code,fund5_volumn fund5Volumn,fund6_code fund6Code,fund6_volumn fund6Volumn,
+    	       fund7_code fund7Code,fund7_volumn fund7Volumn,fund8_code fund8Code,fund8_volumn fund8Volumn
+    	from Bank_Loans where CustomerId = #{customerId}
+    </select>
+    <select id="getNewOwnFundsList" parameterType="String" resultType="newOwnFunds">
+    	select id,customerId,completed,apply_year applyYear,apply_month applyMonth,apply_day applyDay,apply_amount applyAmount,
+    	       account_type accountType,investment_to investmentTo,pay_method payMethod,inv_instruction invInstruction,
+    	       one_time_pad_date oneTimePADDate,account_number accountNumber,transit_number transitNumber,institution_number institutionNumber,
+    	       institution_name institutionName,name_of_account_owner nameOfAccountOwner,regular_pad_1st_date regularPAD1stDate,frequency,day,
+    	       sales_charge salesCharge,settle_year settleYear,settle_month settleMonth,settle_day settleDay,settle_week settleWeek,
+    	       contract_no contractNo,settle_amount settleAmount,result,referral_fee referralFee,comments,fund1_code fund1Code,
+    	       fund1_volumn fund1Volumn,fund2_code fund2Code,fund2_volumn fund2Volumn,fund3_code fund3Code,fund3_volumn fund3Volumn,
+    	       fund4_code fund4Code,fund4_volumn fund4Volumn,fund5_code fund5Code,fund5_volumn fund5Volumn,
+    	       fund6_code fund6Code,fund6_volumn fund6Volumn,fund7_code fund7Code,fund7_volumn fund7Volumn,
+    	       fund8_code fund8Code,fund8_volumn fund8Volumn
+    	from New_Own_Funds where CustomerId = #{customerId}
+    </select>
+    <select id="getInvTransList" parameterType="String" resultType="investmentTransfers">
+    	select id,customerId,completed,transfer_type transferType,apply_year applyYear,apply_month applyMonth,apply_day applyDay,
+    	       account_type accountType,transfer_method transferMethod,account_no accountNo,transfer_amount transferAmount,
+    	       investment_to investmentTo,sales_charge salesCharge,relinquishing_institution_name relinquishingInstitutionName,
+    	       institution_address institutionAddress,settle_year settleYear,settle_month settleMonth,settle_day settleDay,
+    	       settle_week settleWeek,contract_no contractNo,settle_amount settleAmount,result,referral_fee referralFee,comments,
+    	       fund1_code fund1Code,fund1_volumn fund1Volumn,fund2_code fund2Code,fund2_volumn fund2Volumn,
+    	       fund3_code fund3Code,fund3_volumn fund3Volumn,fund4_code fund4Code,fund4_volumn fund4Volumn,
+    	       fund5_code fund5Code,fund5_volumn fund5Volumn,fund6_code fund6Code,fund6_volumn fund6Volumn,
+    	       fund7_code fund7Code,fund7_volumn fund7Volumn,fund8_code fund8Code,fund8_volumn fund8Volumn
+    	from Investment_Transfers where CustomerId = #{customerId}
+    </select>
+    <select id="getTransaction" parameterType="String" resultMap="transMap">
+    	select ID,Agent_Code agentCode,Enter_Date enterDate,CustomerID,Co_Applicant hasCoApplicant,Co_ApplicantID,ReferrerID,Referrer_FirstName referrerFirstName,Referrer_LastName referrerLastName,Referral_Time referralTime,Comments from Transactions where CustomerId = #{customerId}
+    </select>
+    <resultMap type="Transactions" id="transMap" autoMapping="true">
+    	<id column="ID" property="id" />
+    	<association property="customer" javaType="Customer" autoMapping="true">
+    		<id column="CustomerID" property="customerId" />
+    	</association>
+    	<association property="coApplicant" javaType="Customer" autoMapping="true">
+    		<id column="Co_ApplicantID" property="customerId" />
+    	</association>
+    </resultMap>
+
+    <update id="updateTransaction" parameterType="transactions">
+    	update transactions set agent_code=#{agentCode},enter_date=#{enterDate},co_applicant=#{hasCoApplicant},co_applicantId=#{coApplicant.customerId},referrerId=#{referrerId},referrer_firstname=#{referrerFirstName},referrer_lastname=#{referrerLastName},referral_time=#{referralTime},comments=#{comments} where id = #{id}
+    </update>
+    <update id="updateCustomer" parameterType="customer">
+    	update customer set first_name=#{firstName},last_name=#{lastName},english_name=#{englishName},gender=#{gender},birth_year=#{birthYear},birth_month=#{birthMonth},birth_day=#{birthDay},sin=#{sin},living_status=#{livingStatus},marital_status=#{maritalStatus},citizenship=#{citizenship},tax_status=#{taxStatus},birth_place=#{birthPlace},live_in_canada_since=#{liveInCanadaSince},email=#{email},cell_phone=#{cellPhone},home_phone=#{homePhone},work_phone=#{workPhone},current_house_number=#{currentHouseNumber},current_street_name=#{currentStreetName},current_apt_number=#{currentAptNumber},current_city=#{currentCity},current_province=#{currentProvince},current_postal_code=#{currentPostalCode},current_since=#{currentSince},previous_house_number=#{previousHouseNumber},previous_street_name=#{previousStreetName},
+    		   previous_apt_number=#{previousAptNumber},previous_city=#{previousCity},previous_province=#{previousProvince},previous_postal_code=#{previousPostalCode},previous_since=#{previousSince},id_type=#{idType},id_number=#{idNumber},issue_date=#{issueDate},expiry_date=#{expiryDate},province_of_issue=#{provinceOfIssue},verification_date=#{verificationDate},declared_bankruptcy_ever=#{declaredBankruptcyEver},date_of_discharge=#{dateOfDischarge},spouse_first_name=#{spouseFirstName},spouse_last_name=#{spouseLastName},spouse_dob=#{spouseDOB},child1=#{child1},child1_age=#{child1Age},child2=#{child2},child2_age=#{child2Age},child3=#{child3},child3_age=#{child3Age},child4=#{child4},child4_age=#{child4Age},comments=#{comments}
+    	where customerid=#{customerId}
+    </update>
+    <update id="updateEmploymentInfos" parameterType="employmentInfos">
+    	update employment_info set employment_status=#{employmentStatus},annual_income=#{annualIncome},employer_name=#{employerName},business_address=#{businessAddress},duration=#{duration},industry=#{industry},occupation=#{occupation} where customerId=#{customerId} and type=#{type}
+    </update>
+    <update id="updateBeneficiariesTrustee" parameterType="beneficiariesTrustee">
+    	update beneficiaries_trustee set type=#{type},last_name=#{lastName},first_name=#{firstName},relationship=#{relationship},gender=#{gender},benificiarytype=#{benificiaryType},dob=#{dob},share_percent=#{sharePercent},sin_for_resp_only=#{sinForRESPOnly} where id=#{id}
+    </update>
+    <update id="updateLiabilities" parameterType="liabilities">
+    	update liabilities set type=#{type},market_value=#{marketValue},liability_balance=#{liabilityBalance},institution=#{institution},monthly_liability=#{monthlyLiability},monthly_property_tax=#{monthlyPropertyTax},monthly_condo_fee=#{monthlyCondoFee} where id=#{id}
+    </update>
+    <update id="updateAssets" parameterType="asset">
+    	update assets set applicant_value=#{applicantValue},institution=#{institution} where customerId=#{customerId} and type=#{type}
+    </update>
+    <update id="updateIncomes" parameterType="incomes">
+    	update incomes set type=#{type},annual=#{annual},monthly=#{monthly} where id=#{id}
+    </update>
+    <update id="updateNewOwnFunds" parameterType="newOwnFunds">
+    	update new_own_funds set completed=#{completed} where id=#{id}
+    </update>
+    <update id="updateBankLoans" parameterType="bankLoans">
+    	update bank_loans set completed=#{completed} where id=#{id}
+    </update>
+    <update id="updateInvestmentTransfers" parameterType="investmentTransfers">
+    	update investment_transfers set completed=#{completed} where id=#{id}
+    </update>
+    <select id="queryTrans" parameterType="conditions" resultType="transactionTable">
+    	select t.id,t.agent_code,t.enter_date,t.customerid,concat(cu.first_name," ",cu.last_name,if(cu.english_name is null or cu.english_name='',"",concat(" (",cu.english_name,")"))) customerName,t.co_applicantid,concat(co.first_name," ",co.last_name,case when isnull(co.english_name)=1 or co.english_name='' then "" else concat(" (",co.english_name,")") end) coApplicantName,t.referrerid,concat(t.referrer_firstname," ",t.referrer_lastname) referrerName,t.referral_time,t.comments
+        from Transactions t
+        left join Customer cu on t.customerid = cu.customerid
+        left join Customer co on t.co_applicantid = co.customerid
+        <where>
+        	<if test="agentCode!=null and agentCode!=''">and t.agent_code=#{agentCode}</if>
+        	<if test="enterDateFrom!=null">and t.enter_date&gt;=#{enterDateFrom}</if>
+        	<if test="enterDateTo!=null">and t.enter_date&lt;=#{enterDateTo}</if>
+        	<if test="customerId!=null and customerId!=''">and t.customerId=#{customerId}</if>
+        	<if test="cuFirstName!=null and cuFirstName!=''">and cu.first_name like '%${cuFirstName}%'</if>
+        	<if test="cuLastName!=null and cuLastName!=''">and cu.last_name like '%${cuLastName}%'</if>
+        	<if test="coApplicantId!=null and coApplicantId!=''">and t.co_applicantId=#{coApplicantId}</if>
+        	<if test="coFirstName!=null and coFirstName!=''">and co.first_name like '%${coFirstName}%'</if>
+        	<if test="coLastName!=null and coLastName!=''">and co.last_name like '%${coLastName}%'</if>
+        	<if test="referrerId!=null and referrerId!=''">and t.referrerId=#{referrerId}</if>
+        	<if test="referrerFirstName!=null and referrerFirstName!=''">and t.referrer_firstname like '%${referrerFirstName}%'</if>
+        	<if test="referrerLastName!=null and referrerLastName!=''">and t.referrer_lastname like '%${referrerLastName}%'</if>
+        	<if test="referralTimeFrom!=null">and t.referral_time&gt;=#{referralTimeFrom}</if>
+        	<if test="referralTimeTo!=null">and t.referral_time&lt;=#{referralTimeTo}</if>
+        </where>
+        order by t.id
+    </select>
+    <select id="queryCustomer" parameterType="conditions" resultType="customerTable">
+    	select IFNULL((select CustomerID from Transactions where CustomerID = a.CustomerID),concat(CustomerID,' *')) customerId,First_Name firstName,Last_Name lastName,English_Name englishName,Gender gender,concat(birth_year,'-',case when birth_month&lt;10 then concat('0',birth_month) else birth_month end, '-', case when Birth_Day&lt;10 then concat('0',Birth_Day) else Birth_Day end) dob,Email email,Cell_Phone cellPhone,Home_Phone homePhone,Work_Phone workPhone,Comments comments
+    	from Customer as a
+    	<trim prefix="where" prefixOverrides="or">
+    		<if test="(customerId!=null and customerId!='') or (cuFirstName!=null and cuFirstName!='') or (cuLastName!=null and cuLastName!='')">
+    			<trim prefix="or (" suffix=")" prefixOverrides="and">
+	    			<if test="customerId!=null and customerId!=''">and customerId=#{customerId}</if>
+	    			<if test="cuFirstName!=null and cuFirstName!=''">and first_name like '%${cuFirstName}%'</if>
+	    			<if test="cuLastName!=null and cuLastName!=''">and last_name like '%${cuLastName}%'</if>
+	    		</trim>
+    		</if>
+    		<if test="(coApplicantId!=null and coApplicantId!='') or (coFirstName=!null and coFirstName!='') or (coLastName!=null and coLastName!='')">
+    			<trim prefix="or (" suffix=")" prefixOverrides="and">
+    				<if test="coApplicantId!=null and coApplicantId!=''">and customerId=#{coApplicantId}</if>
+		    		<if test="coFirstName!=null and coFirstName!=''">and first_name like '%${coFirstName}%'</if>
+		    		<if test="coLastName!=null and coLastName!=''">and last_name like '%${coLastName}%'</if>
+    			</trim>
+    		</if>
+    	</trim>
+    	order by CustomerID
+    </select>
+    <select id="queryNOF" parameterType="conditions" resultType="newOwnFundsTable">
+    	select id,customerId,completed,concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end) applyDate,apply_amount applyAmount,account_type accountType,investment_to investTo,name_of_account_owner nameOfOwner,sales_charge salesCharge,concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end) settleDate,contract_no contractNo,settle_amount settleAmount,result result,referral_fee referralFee,comments
+    	from New_Own_Funds
+    	<where>
+    		<if test="customerId!=null and customerId!=''">and customerId=#{customerId}</if>
+    		<if test="applyDateFrom!=null">and concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end)&gt;=#{applyDateFrom}</if>
+    		<if test="applyDateTo!=null">and concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end)&lt;=#{applyDateTo}</if>
+    		<if test="settleDateFrom!=null">and concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end)&gt;=#{settleDateFrom}</if>
+    		<if test="settleDateTo!=null">and concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end)&lt;=#{settleDateTo}</if>
+    	</where>
+    	order by ID
+    </select>
+    <select id="queryBL" parameterType="conditions" resultType="bankLoansTable">
+    	select id,customerId,completed,account_type accountType,concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end) applyDate,apply_amount applyAmount,investment_to investTo,loan_type loanType,sales_charge salesCharge,concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end) settleDate,contract_no contractNo,settle_amount settleAmount,result result,referral_fee referralFee,comments
+    	from Bank_Loans
+    	<where>
+    		<if test="customerId!=null and customerId!=''">and customerId=#{customerId}</if>
+    		<if test="applyDateFrom!=null">and concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end)&gt;=#{applyDateFrom}</if>
+    		<if test="applyDateTo!=null">and concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end)&lt;=#{applyDateTo}</if>
+    		<if test="settleDateFrom!=null">and concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end)&gt;=#{settleDateFrom}</if>
+    		<if test="settleDateTo!=null">and concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end)&lt;=#{settleDateTo}</if>
+    	</where>
+    	order by ID
+    </select>
+    <select id="queryIT" parameterType="conditions" resultType="invTransTable">
+    	select id,customerId,completed,transfer_type transferType,account_type accountType,concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end) applyDate,transfer_amount transferAmount,investment_to investTo,sales_charge salesCharge,concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end) settleDate,contract_no contractNo,settle_amount settleAmount,result result,referral_fee referralFee,comments
+    	from Investment_Transfers
+    	<where>
+    		<if test="customerId!=null and customerId!=''">and customerId=#{customerId}</if>
+    		<if test="applyDateFrom!=null">and concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end)&gt;=#{applyDateFrom}</if>
+    		<if test="applyDateTo!=null">and concat(apply_year,'-',case when apply_month&lt;10 then concat('0',apply_month) else apply_month end, '-', case when apply_Day&lt;10 then concat('0',apply_day) else apply_day end)&lt;=#{applyDateTo}</if>
+    		<if test="settleDateFrom!=null">and concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end)&gt;=#{settleDateFrom}</if>
+    		<if test="settleDateTo!=null">and concat(settle_year,'-',case when settle_month&lt;10 then concat('0',settle_month) else settle_month end, '-', case when settle_Day&lt;10 then concat('0',settle_day) else settle_day end)&lt;=#{settleDateTo}</if>
+    	</where>
+    	order by ID
+    </select>
+    <select id="getCustomerIdByCoApplicantId" parameterType="String" resultType="String">
+    	select CustomerID from Transactions where Co_ApplicantID = #{customerId}
+    </select>
+</mapper>
