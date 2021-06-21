@@ -17,7 +17,7 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
 		if(ex instanceof CustomException) {
 			customException=(CustomException) ex;
 		}else {
-			customException=new CustomException("未知错误");
+			customException=new CustomException("Unknown Exception");
 		}
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName("error");
