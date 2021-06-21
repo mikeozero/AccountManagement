@@ -13,20 +13,13 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
 
-<!-- 事务管理器 
-	对mybatis操作数据库事务控制，spring使用jdbc的事务控制类
--->
+
 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-	<!-- 数据源
-	dataSource在applicationContext-dao.xml中配置了
-	 -->
 	<property name="dataSource" ref="dataSource"/>
 </bean>
 
-<!-- 通知 -->
 <tx:advice id="txAdvice" transaction-manager="transactionManager">
 	<tx:attributes>
-		<!-- 传播行为 -->
 		<tx:method name="save*" propagation="REQUIRED"/>
 		<tx:method name="delete*" propagation="REQUIRED"/>
 		<tx:method name="insert*" propagation="REQUIRED"/>
