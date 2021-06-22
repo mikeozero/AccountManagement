@@ -15,10 +15,10 @@
 **calculate on inputs:**
 ![image](https://user-images.githubusercontent.com/53555169/122978341-6931e500-d364-11eb-915b-415280b180e3.png)
 
-![image](https://user-images.githubusercontent.com/53555169/122815180-1c3a0a00-d2a3-11eb-9d60-e56a37297a69.png)
+![image](https://user-images.githubusercontent.com/53555169/122978739-d776a780-d364-11eb-81df-8c25dc71506a.png)
 
 **add or delete a transaction form:**
-![image](https://user-images.githubusercontent.com/53555169/122815430-6f13c180-d2a3-11eb-9f3e-73132ee00a7b.png)
+![image](https://user-images.githubusercontent.com/53555169/122979308-65529280-d365-11eb-89e2-6474d01e4189.png)
 
 **data structure:**
 ![image](https://user-images.githubusercontent.com/53555169/122822804-902ce000-d2ac-11eb-8356-6075affb1375.png)
