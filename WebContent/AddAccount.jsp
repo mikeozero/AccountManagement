@@ -61,7 +61,7 @@
 							    	<th class="title" colspan="5">Financial Group</th>
 							    	<th class="sub" colspan="6">Personal Information</th>
 							    </tr>
-								<tr><td class="red" colspan="12">Financial Agent Use Only</td></tr>
+								<tr><td class="red" colspan="12">Agent Use Only</td></tr>
 								<tr>
 									<td class="red">Agent Code</td>
 									<td colspan="2"><input type="text" name="agentCode" id="agentcode"></td>
@@ -493,7 +493,7 @@
 							    	<th class="title" colspan="5">Financial Group</th>
 							    	<th class="sub" colspan="6">Co Applicant Information</th>
 							    </tr>
-								<tr><td class="red" colspan="12">Financial Agent Use Only</td></tr>
+								<tr><td class="red" colspan="12">Agent Use Only</td></tr>
 								<tr>
 									<td class="red">Agent Code</td>
 									<td colspan="2"><input type="text" readonly="readonly"></td>
