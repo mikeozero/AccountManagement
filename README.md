@@ -10,7 +10,7 @@
 **the detail info:**
 ![image](https://user-images.githubusercontent.com/53555169/122977416-61be0c00-d363-11eb-9c20-ad1d966faab5.png)
 
-![image](https://user-images.githubusercontent.com/53555169/122815095-0593b300-d2a3-11eb-96a7-716fad878057.png)
+![image](https://user-images.githubusercontent.com/53555169/122977666-aba6f200-d363-11eb-85b7-fcf5378b20a5.png)
 
 **calculate on inputs:**
 ![image](https://user-images.githubusercontent.com/53555169/122816773-252bdb00-d2a5-11eb-84b8-d3b5703d6683.png)
