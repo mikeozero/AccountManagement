@@ -59,7 +59,7 @@
 							<table id="personaltb" border="1" cellspacing="0" cellpadding="0">
 							    <tr>
 							    	<th><img src="./images/Financial.png"></th>
-							    	<th class="title" colspan="5">Financial</th>
+							    	<th class="title" colspan="5">Account Management</th>
 							    	<th class="sub" colspan="6">Personal Information</th>
 							    </tr>
 								<tr><td class="deepblue" colspan="12">Agent Use Only</td></tr>
@@ -526,7 +526,7 @@
 							<table border="1" cellspacing="0" cellpadding="0">
 							    <tr>
 							    	<th><img src="./images/Financial.png"></th>
-							    	<th class="title" colspan="5">Financial</th>
+							    	<th class="title" colspan="5">Account Management</th>
 							    	<th class="sub" colspan="6">Co Applicant Information</th>
 							    </tr>
 								<tr><td class="deepblue" colspan="12">Agent Use Only</td></tr>
@@ -793,7 +793,7 @@
 							<table id="table1" border="1" cellspacing="0" cellpadding="0">
 							    <tr>
 							    	<th><img src="./images/Financial.png"></th>
-							    	<th class="title" colspan="3">Financial</th>
+							    	<th class="title" colspan="3">Account Management</th>
 							    	<th class="sub" colspan="3">Assets & Liabilities</th>
 							    </tr>
 								<tr>
@@ -1001,7 +1001,7 @@
 							<table style="box-shadow: 0rem 0rem 0rem white;">
 							<tr>
 								<th><img src="./images/Financial.png"></th>
-								<th class="title" colspan="3">Financial</th>
+								<th class="title" colspan="3">Account Management</th>
 								<th class="sub" colspan="3">Account Infomation</th>
 							</tr>
 							</table>
