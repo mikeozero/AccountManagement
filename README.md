@@ -8,9 +8,9 @@
 ![image](https://user-images.githubusercontent.com/53555169/122817068-7b008300-d2a5-11eb-960d-0ff7fbfeb852.png)
 
 **the detail info:**
-![image](https://user-images.githubusercontent.com/53555169/122977416-61be0c00-d363-11eb-9c20-ad1d966faab5.png)
+![image](https://user-images.githubusercontent.com/53555169/122980708-fb3aed00-d366-11eb-977d-7edaf6e57311.png)
 
-![image](https://user-images.githubusercontent.com/53555169/122977666-aba6f200-d363-11eb-85b7-fcf5378b20a5.png)
+![image](https://user-images.githubusercontent.com/53555169/122980802-14439e00-d367-11eb-9e60-bad44c78c3fe.png)
 
 **calculate on inputs:**
 ![image](https://user-images.githubusercontent.com/53555169/122978341-6931e500-d364-11eb-915b-415280b180e3.png)
