@@ -13,9 +13,9 @@
 ![image](https://user-images.githubusercontent.com/53555169/122980802-14439e00-d367-11eb-9e60-bad44c78c3fe.png)
 
 **calculate on inputs:**
-![image](https://user-images.githubusercontent.com/53555169/122978341-6931e500-d364-11eb-915b-415280b180e3.png)
+![image](https://user-images.githubusercontent.com/53555169/122981594-ee6ac900-d367-11eb-8107-59a3d5b5ceb3.png)
 
-![image](https://user-images.githubusercontent.com/53555169/122978739-d776a780-d364-11eb-81df-8c25dc71506a.png)
+![image](https://user-images.githubusercontent.com/53555169/122981075-5ff64780-d367-11eb-837e-dfefa99e9f80.png)
 
 **add or delete a transaction form:**
 ![image](https://user-images.githubusercontent.com/53555169/122979308-65529280-d365-11eb-89e2-6474d01e4189.png)
