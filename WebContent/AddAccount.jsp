@@ -14,6 +14,7 @@
 	<style>
 		div{margin-top: 20px;}
 		.red{background-color: red;color: white;}
+		.deepblue{background-color: #1892B7;color: white;}
 		.blue{background-color: lightblue;color: gray;}
 		.gray{background-color: lightgray;}
 		.yellow{background-color: yellow;color: gray;}
@@ -58,27 +59,27 @@
 							<table id="personaltb" border="1" cellspacing="0" cellpadding="0">
 							    <tr>
 							    	<th><img src="./images/Financial.png"></th>
-							    	<th class="title" colspan="5">Financial Group</th>
+							    	<th class="title" colspan="5">Financial</th>
 							    	<th class="sub" colspan="6">Personal Information</th>
 							    </tr>
-								<tr><td class="red" colspan="12">Agent Use Only</td></tr>
+								<tr><td class="deepblue" colspan="12">Agent Use Only</td></tr>
 								<tr>
-									<td class="red">Agent Code</td>
+									<td class="deepblue">Agent Code</td>
 									<td colspan="2"><input type="text" name="agentCode" id="agentcode"></td>
-									<td class="red">Enter Date</td>
+									<td class="deepblue">Enter Date</td>
 									<td colspan="3"><input type="date" name="enterDate"></td>
-									<td class="red" colspan="2">Customer ID</td>
+									<td class="deepblue" colspan="2">Customer ID</td>
 									<td colspan="3"><input type="text" name="customer.customerId"></td>
 								</tr>
-								<tr><td class="red" colspan="12">Referral</td></tr>
+								<tr><td class="deepblue" colspan="12">Referral</td></tr>
 								<tr>
-									<td class="red">First Name</td>
+									<td class="deepblue">First Name</td>
 									<td colspan="2"><input type="text" class="upper" name="referrerFirstName"></td>
-									<td class="red">Last Name</td>
+									<td class="deepblue">Last Name</td>
 									<td colspan="2"><input type="text" class="upper" name="referrerLastName"></td>
-									<td class="red">Time</td>
+									<td class="deepblue">Time</td>
 									<td colspan="2"><input type="date" name="referralTime"></td>
-									<td class="red">ID</td>
+									<td class="deepblue">ID</td>
 									<td colspan="2"><input type="text" name="referrerId"></td>
 								</tr>
 								<tr>
@@ -490,27 +491,27 @@
 							<table border="1" cellspacing="0" cellpadding="0">
 							    <tr>
 							    	<th><img src="./images/Financial.png"></th>
-							    	<th class="title" colspan="5">Financial Group</th>
+							    	<th class="title" colspan="5">Financial</th>
 							    	<th class="sub" colspan="6">Co Applicant Information</th>
 							    </tr>
-								<tr><td class="red" colspan="12">Agent Use Only</td></tr>
+								<tr><td class="deepblue" colspan="12">Agent Use Only</td></tr>
 								<tr>
-									<td class="red">Agent Code</td>
+									<td class="deepblue">Agent Code</td>
 									<td colspan="2"><input type="text" readonly="readonly"></td>
-									<td class="red">Enter Date</td>
+									<td class="deepblue">Enter Date</td>
 									<td colspan="3"><input type="text" readonly="readonly"></td>
-									<td class="red" colspan="2">Customer ID</td>
+									<td class="deepblue" colspan="2">Customer ID</td>
 									<td colspan="3"><input type="text" name="coApplicant.customerId"></td>
 								</tr>
-								<tr><td class="red" colspan="12">Referral</td></tr>
+								<tr><td class="deepblue" colspan="12">Referral</td></tr>
 								<tr>
-									<td class="red">First Name</td>
+									<td class="deepblue">First Name</td>
 									<td colspan="2"><input type="text" readonly="readonly"></td>
-									<td class="red">Last Name</td>
+									<td class="deepblue">Last Name</td>
 									<td colspan="2"><input type="text" readonly="readonly"></td>
-									<td class="red">Time</td>
+									<td class="deepblue">Time</td>
 									<td colspan="2"><input type="text" readonly="readonly"></td>
-									<td class="red">ID</td>
+									<td class="deepblue">ID</td>
 									<td colspan="2"><input type="text" readonly="readonly"></td>
 								</tr>
 								<tr>
@@ -722,7 +723,7 @@
 							<table id="table1" border="1" cellspacing="0" cellpadding="0">
 							    <tr>
 							    	<th><img src="./images/Financial.png"></th>
-							    	<th class="title" colspan="3">Financial Group</th>
+							    	<th class="title" colspan="3">Financial</th>
 							    	<th class="sub" colspan="3">Assets & Liabilities</th>
 							    </tr>
 								<tr>
@@ -839,7 +840,7 @@
 							<table style="box-shadow: 0rem 0rem 0rem white;">
 							<tr>
 								<th><img src="./images/Financial.png"></th>
-								<th class="title" colspan="3">Financial Group</th>
+								<th class="title" colspan="3">Financial</th>
 								<th class="sub" colspan="3">Account Infomation</th>
 							</tr>
 							</table>
