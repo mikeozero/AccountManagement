@@ -58,10 +58,10 @@
 							<table id="personaltb" border="1" cellspacing="0" cellpadding="0">
 							    <tr>
 							    	<th><img src="./images/Financial.png"></th>
-							    	<th class="title" colspan="5">Financial Power Group</th>
+							    	<th class="title" colspan="5">Financial Group</th>
 							    	<th class="sub" colspan="6">Personal Information</th>
 							    </tr>
-								<tr><td class="red" colspan="12">Financial Agent Use Only</td></tr>
+								<tr><td class="red" colspan="12">Agent Use Only</td></tr>
 								<tr>
 									<td class="red">Agent Code</td>
 									<td colspan="2"><input type="text" value="${transdetail.agentCode}" name="agentCode" id="agentcode"><input type="hidden" value="${transdetail.id}" name="id"></td>
@@ -525,10 +525,10 @@
 							<table border="1" cellspacing="0" cellpadding="0">
 							    <tr>
 							    	<th><img src="./images/Financial.png"></th>
-							    	<th class="title" colspan="5">Financial Power Group</th>
+							    	<th class="title" colspan="5">Financial Group</th>
 							    	<th class="sub" colspan="6">Co Applicant Information</th>
 							    </tr>
-								<tr><td class="red" colspan="12">Financial Agent Use Only</td></tr>
+								<tr><td class="red" colspan="12">Agent Use Only</td></tr>
 								<tr>
 									<td class="red">Agent Code</td>
 									<td colspan="2"><input type="text" readonly="readonly"></td>
@@ -792,7 +792,7 @@
 							<table id="table1" border="1" cellspacing="0" cellpadding="0">
 							    <tr>
 							    	<th><img src="./images/Financial.png"></th>
-							    	<th class="title" colspan="3">Financial Power Group</th>
+							    	<th class="title" colspan="3">Financial Group</th>
 							    	<th class="sub" colspan="3">Assets & Liabilities</th>
 							    </tr>
 								<tr>
@@ -1000,7 +1000,7 @@
 							<table style="box-shadow: 0rem 0rem 0rem white;">
 							<tr>
 								<th><img src="./images/Financial.png"></th>
-								<th class="title" colspan="3">Financial Power Group</th>
+								<th class="title" colspan="3">Financial Group</th>
 								<th class="sub" colspan="3">Account Infomation</th>
 							</tr>
 							</table>
