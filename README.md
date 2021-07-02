@@ -1,6 +1,6 @@
 # AccountManagement  
 **This is a web-based account management application (SSM framework)**  
-`HTML` `CSS` `JavaScript` `Java` `Spring` `Spring MVC` `Mybatis` `MySQL`
+`HTML` `CSS` `JavaScript` `Java` `Spring` `Spring MVC` `Mybatis` `MySQL` `Full-Stack`
 
 ![image](https://user-images.githubusercontent.com/53555169/122814889-c9605280-d2a2-11eb-9df0-9b353977a2ec.png)
 
