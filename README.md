@@ -19,6 +19,3 @@
 
 **add or delete a transaction form:**
 ![image](https://user-images.githubusercontent.com/53555169/122979308-65529280-d365-11eb-89e2-6474d01e4189.png)
-
-**data structure:**
-![image](https://user-images.githubusercontent.com/53555169/122822804-902ce000-d2ac-11eb-8356-6075affb1375.png)
